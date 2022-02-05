@@ -1,0 +1,6 @@
+dontinline,ca/neu/MyBenchmark.compete_avgt_jmhLoop
+dontinline,ca/neu/MyBenchmark.compete_sample_jmhLoop
+dontinline,ca/neu/MyBenchmark.compete_ss_jmhStub
+dontinline,ca/neu/MyBenchmark.compete_thrpt_jmhLoop
+inline,ca/neu/MyBenchmark.compete
+inline,org/openjdk/jmh/infra/Blackhole.clearSinks
