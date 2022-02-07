@@ -55,39 +55,17 @@ public class Sorting {
    * @param list - list to be sorted and the searched
    */
   private void sort(List list, int index) {
-    radixSort(list.stream().mapToInt(i -> (int) i).toArray(), list.size());
+    int[] unsortedList =  new int[list.size()];
+    for (int i = 0; i < list.size(); i++)
+      unsortedList[i] = (int) list.get(i);
+
+    radixSort(unsortedList, list.size());
 //        Collections.sort(list);
   }
 
   /**
-   * Do Counting Sort to  for digit at (exp)th place of the list in the Radix Sort.
-   *
-   * @param list unsorted list
-   * @param n    size of list
-   * @param exp  to get the current digit number
-   * @param base the size of array we need to sort
-   */
-  static void countSort(int[] list, int n, int exp, int base) {
-    int sortedList[] = new int[n];
-    int count[] = new int[base];
-    int mod[] = new int[n];
-    for (int i = 0; i < n; i++) {
-      mod[i] = (list[i] / exp) % base;
-      count[mod[i]]++;
-    }
-
-    for (int i = 1; i < base; i++)
-      count[i] += count[i - 1];
-
-    for (int i = n - 1; i >= 0; i--)
-        sortedList[count[mod[i]]-- - 1] = list[i];
-
-    for (int i = 0; i < n; i++)
-      list[i] = sortedList[i];
-  }
-
-  /**
-   * Do Radix Sort for list of size n.
+   * Radix sort.
+   * Instead of using base of 10, using 256 as base can be more efficient.
    *
    * @param list the list
    * @param n    size of list
@@ -98,6 +76,44 @@ public class Sorting {
     for (int exp = 1; max / exp > 0; exp *= base)
       countSort(list, n, exp, base);
   }
+
+
+  /**
+   * Counting sort.
+   *
+   * @param list unsorted list
+   * @param n    size of list
+   * @param exp
+   * @param base
+   */
+  static void countSort(int[] list, int n, int exp, int base) {
+    int sortedList[] = new int[n];
+    int count[] = new int[base];
+    int mod[] = new int[n];
+
+    // Store count of occurrences in count[]
+    for (int i = 0; i < n; i++) {
+      mod[i] = (list[i] / exp) % base;
+      count[mod[i]]++;
+    }
+
+    // Change count[i] so that count[i] now contains actual
+    // position of this digit in output[]
+    for (int i = 1; i < base; i++) {
+      count[i] += count[i - 1];
+    }
+
+    // Build sorted array
+    for (int i = n - 1; i >= 0; i--) {
+      sortedList[count[mod[i]] - 1] = list[i];
+      count[mod[i]]--;
+    }
+
+    for (int i = 0; i < n; i++) {
+      list[i] = sortedList[i];
+    }
+  }
+
 
   /**
    * Helper method to get the max element in array
